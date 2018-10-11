@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+<!--调用Android的方法获取token，回掉在下方js获取数据 ,android为Android客户端中定义的js对象，getToken(),为Android中的方法-->
+<button onClick="window.android.getToken()">获取Token</button>
+<p>显示来自Android客户端得Token:</p>
+</body>
+<script language="javascript">
+//获取token，Android端返回数据。json为数据对象
+function getAppToken(json){
+ //alert("msg:"+json.token);
+ var gettoken=document.createElement('p');
+  gettoken.id='div_id';
+  gettoken.innerHTML=json.token;
+  document.body.appendChild(gettoken);
+}
+</script>
+</html>

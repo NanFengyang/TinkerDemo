@@ -1,0 +1,62 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.example.yyt.qugutestapplication"
+        minSdkVersion 23
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+        buildConfigField "String", "MESSAGE", "\"I am the base apk\""
+        buildConfigField "String", "PLATFORM", "\"all\""
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+    dexOptions {
+        jumboMode = true
+    }
+    signingConfigs {
+        release {
+            keyAlias 'yyt'
+            keyPassword '123456'
+            storeFile file("yyt.jks")
+            storePassword '123456'
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+           signingConfig signingConfigs.release
+        }
+        debug {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+}
+// 加入Tinker生成补丁包的gradle
+apply from: 'buildTinker.gradle'
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.0.0-alpha1'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.1.0-alpha3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha3'
+    //添加tinker
+    implementation("com.tencent.tinker:tinker-android-lib:${TINKER_VERSION}")
+    annotationProcessor("com.tencent.tinker:tinker-android-anno:${TINKER_VERSION}")
+    compileOnly("com.tencent.tinker:tinker-android-anno:${TINKER_VERSION}")
+    implementation "com.android.support:multidex:1.0.1"
+}
